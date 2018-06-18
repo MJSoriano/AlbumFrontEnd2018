@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Trabalho frontend - 2018</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Chamadas de sistema - Bootstrap e Jquery -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="js/jquery-3.1.1.js" type="text/javascript"></script>
+    <script src="js/bootstrap.min.js" type="text/javascript"></script>
+    <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet" type="text/css" />
+    <link href="css/sticky-footer-navbar.css" rel="stylesheet" type="text/css" />
+    <script src="js/ie-emulation-modes-warning.js" type="text/javascript"></script>
+
+    <!-- Chamadas customizadas -->
+    <script src="scripts/scriptAPI.js"></script>
+    <link href="css/customAPI.css" rel="stylesheet" type="text/css" />
+    <script src="scripts/scriptIMG.js"></script>
+    <link href="css/customPagina.css" rel="stylesheet" type="text/css" />
+    <script src="scripts/scriptPagina.js"></script>
+    <script src="scripts/scriptDB.js"></script>
+    <script src="scripts/scriptSlide.js"></script>
+</head>
+
+<body>
+    <section id="barraMenu">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                        aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="javascript:Menu('minhasImagens')">Album PUC</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="javascript:Menu('minhasImagens')">Minhas imagens</a>
+                        </li>
+                        <li>
+                            <a href="javascript:Menu('buscarImagens')">Buscar imagens</a>
+                        </li>
+                        <li>
+                            <a href="javascript:Menu('creditosPagina')">Créditos</a>
+                        </li>
+                    </ul>
+                    <form class="navbar-form navbar-right">
+                        <div class="form-group">
+                            <input type="text" id="pesquisatxt" name="pesquisatxt" class="form-control" placeholder="informe o tipo de busca">
+                        </div>
+                        <button type="button" class="btn btn-default" onclick="pesquisa()">
+                            <i class="glyphicon glyphicon-search"></i> Pesquisar</button>
+                    </form>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+    </section>
+
+    <section id="buscarImagens" style="display: none">
+        <div class="container col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="well col-xs-12 col-sm-5 col-md-5 col-lg-4">
+                <h3>Busca de imagens</h3>
+                <hr />
+                <form id="search-form">
+                    <fieldset>
+                        <div class="form-group form-group-sm row">
+                            <label class="col-xs-12 col-sm-6 col-md-6 col-lg-6 control-label" for="query">Buscar imagens de:</label>
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <input id="query" name="query" value="" placeholder="default: diversos" list="query-suggestions" class="form-control" />
+                                <datalist id="query-suggestions">
+                                    <option>restaurante</option>
+                                </datalist>
+                            </div>
+                        </div>
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingOptions">
+                                    <h4 class="panel-title">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOptions" aria-expanded="false" aria-controls="collapseOptions">
+                                            <i class="glyphicon glyphicon-filter"></i>&nbsp;Filtros
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOptions">
+                                    <div class="panel-body">
+                                        <div class="form-horizontal form-group-sm">
+                                            <div class="form-group hide" hidden>
+                                                <label for="safe" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">Safe Search:</label>
+                                                <select id="safe" name="safe" class="btn col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                    <option value="true" selected>On</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="image_type" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">Tipo de imagem</label>
+                                                <select id="image_type" name="image_type" class="btn col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                    <option value="">Qualquer tipo</option>
+                                                    <option value="photo" selected>Fotografia</option>
+                                                    <option value="illustration">Ilustração</option>
+                                                    <option value="vector">Vetorial</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orientation" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">Orientação</label>
+                                                <select id="orientation" name="orientation" class="btn col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                    <option value="">Qualquer orientação</option>
+                                                    <option value="vertical" selected>Vertical</option>
+                                                    <option value="horizontal">Horizontal</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="category" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">Categoria</label>
+                                                <select id="category" name="category" class="btn col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                    <option value="" selected>Qualquer categoria</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="people_number" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">Pessoas</label>
+                                                <select id="people_number" name="people_number" class="btn col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                    <option value="" selected>Qualquer quantidade</option>
+                                                    <option value="0">Nehuma</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4 ou mais pessoas</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group invisivel">
+                                                <label for="color" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">Busca de cores</label>
+                                                <input id="color" name="color" type="color" value="#999999" class="hide" hidden/>
+                                                <input type="color" value="#2d978c" onclick="setColor(this)" />
+                                                <input type="color" value="#d97291" onclick="setColor(this)" />
+                                                <br/>
+                                                <input type="color" value="#259503" onclick="setColor(this)" />
+                                                <input type="color" value="#d7d11c" onclick="setColor(this)" />
+                                            </div>
+                                            <div class="form-group invisivel">
+                                                <label for="page" class="col-xs-3 col-sm-3 col-md-3 col-lg-7">Páginas</label>
+                                                <select id="page" name="page" class="btn col-xs-3 col-sm-3 col-md-3 col-lg-5">
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="per_page" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">Itens por página</label>
+                                                <select id="per_page" name="per_page" class="btn col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                    <option value="6">6</option>
+                                                    <option value="12">12</option>
+                                                    <option value="18">18</option>
+                                                    <option value="24">24</option>
+                                                    <option value="30">30</option>
+                                                    <option value="36">36</option>
+                                                    <option value="42">42</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default invisivel">
+                                <div class="panel-heading" role="tab" id="headingAuthentication">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAuthentication" aria-expanded="false"
+                                            aria-controls="collapseAuthentication">
+                                            Chaves
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseAuthentication" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingAuthentication">
+                                    <div class="panel-body">
+                                        <div class="form-group form-group-sm row">
+                                            <label class="col-xs-6 col-sm-6 col-md-6 col-lg-6 control-label" for="client_id">Client ID:</label>
+                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <input id="client_id" name="client_id" autocomplete="on" value="3352aeffbd24d33f8859" class="form-control" />
+                                            </div>
+                                            <label class="col-xs-6 col-sm-6 col-md-6 col-lg-6 control-label" for="client_secret">Client Secret:</label>
+                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <input id="client_secret" name="client_secret" autocomplete="on" value="097f832242ad371d9f012770cabdb1e6cebc433a" class="form-control"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="submit" name="submit" type="submit" class="btn btn-primary pull-right">
+                            <i class="glyphicon glyphicon-search"></i> Procurar</button>
+                    </fieldset>
+                </form>
+            </div>
+
+            <div class="col-xs-12 col-md-7 col-md-7 col-lg-8">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 col-md-12 col-lg-12">
+                        <div class="col-xs-12 col-md-12 col-lg-12 image-results">
+                            <div id="image-search-results"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="minhasImagens">
+        <div class="container col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="well col-xs-12 col-sm-5 col-md-5 col-lg-4">
+                <h4 class="lead">
+                    <h3>Meus álbuns</h3>
+                    <hr />
+                </h4>
+                <form id="albumForm">
+                    <fieldset>
+                        <div class="form-group form-group-sm row">
+                            <label class="col-xs-12 col-sm-4 col-md-4 col-lg-4 control-label" for="nomeAlbumCriar">Criar album</label>
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <input type="text" id="nomeAlbumCriar" name="nomeAlbumCriar" placeholder="nome do album" class="form-control" />
+                            </div>
+                            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+                                <button id="submitAlbum" name="submitAlbum" type="button" class="btn btn-default align-right" onclick="criarAlbum()">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+                <div id="areaAlbuns"></div>
+            </div>
+
+            <div class="col-xs-12 col-md-7 col-md-7 col-lg-8">
+                <div class="row">
+                    <div class="well col-xs-12 col-md-12 col-lg-12 image-results">
+                        <h3 class="text-info">Slide Show</h3>
+                        <!-- Inicio Carrossel -->
+                        <div id="slideShow" class="text-center">
+                            <a id="aId">
+                                <img id="imgId">
+                            </a>
+                            </br>
+                            <button type="button" id="prev" class="btn btn-default btn-lg" onclick="javascript:menos()">
+                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Anterior
+                            </button>
+
+                            <button type="button" id="next" class="btn btn-default btn-lg" onclick="javascript:mais()">
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Próxima
+                            </button>
+                            <form name="form">
+                                <input type="hidden" name="texto">
+                            </form>
+                        </div>
+                        <!-- Fim Cassossel -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="creditosPagina" style="display: none">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-4 col-md-4 col-sm-4 col-lg-4">
+                    <div class="well well-lg">
+                        <h3>Trabalho</h3>
+                        <p class="text text-info">Esse é um trabalho de frontend do curso de Arquitetura de Softwares distribuídos da PUC Minas.</p>
+                    </div>
+                </div>
+                <div class="col-xs-4 col-md-4 col-sm-4 col-lg-4">
+                    <div class="well well-lg">
+                        <h3>Grupo</h3>
+                        <ol>
+                            <li class="text-info">Frederico Ferreira</li>
+                            <li class="text-info">Mateus Soriano</li>
+                            <li class="text-info">Otávio Augusto Reis</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="col-xs-4 col-md-4 col-sm-4 col-lg-4">
+                    <div class="well well-lg">
+                        <h3>Tecnologia</h3>
+                        <p>Foram utilizadas API´s frameworks nesse projeto que devem ser referenciados.</p>
+                        <ul>
+                            <li class="text-muted">Bootstrap Versão 3</li>
+                            <li class="text-muted">Shutterstock
+                                <ul>
+                                    <li class="text-muted">API</li>
+                                    <li class="text-muted">Imagens</li>
+                                    <li class="text-muted">Código de busca</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detail template -->
+    <div class="detail-template modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">x</button>
+                    <h3 class="lead"></h3>
+                </div>
+                <div class="modal-body"></div>
+                <div class="modal-footer">
+                    <input type="hidden" id="idFoto">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h5>Escolha o album que vai receber a foto:</h5>
+                        </div>
+                        <div class="col-sm-6">
+                            <select id="albumAdd" name="albumAdd" class="form-control">
+                                <option value="0" selected>Selecione o álbum</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <button type="button" class="btn btn-danger align-left" data-dismiss="modal">Fechar</button>
+                        </div>
+                        <div class="col-sm-11">
+                            <button type="button" class="btn btn-primary" onclick="adicionarAoAlbum(trim(document.getElementById('albumAdd').value))"
+                                data-dismiss="modal">Adicionar ao Album</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
