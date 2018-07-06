@@ -1,0 +1,21 @@
+{
+  "name": "albumpuc",
+  "version": "1.0.1",
+  "description": "Album de fotos usando api e localstorage para trabalho academico",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Frederico Ferreira - Mateus Soriano - Otavio Augusto Reis",
+  "license": "ISC",
+  "devDependencies": {
+    "grunt": "^1.0.3",
+    "grunt-cli": "^1.2.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-cssmin": "^2.2.1",
+    "grunt-contrib-uglify": "^3.3.0"
+  },
+  "dependencies": {
+    "http-server": "^0.11.1"
+  }
+}
